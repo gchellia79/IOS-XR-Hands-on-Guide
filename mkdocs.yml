@@ -1,0 +1,41 @@
+site_name: IOS XR Hands-on Guide
+site_description: Hands-on lab guide for Cisco IOS XR configuration, processes, memory, task groups, and debugging.
+site_dir: site
+theme:
+  name: material
+  language: en
+  features:
+    - navigation.sections
+    - navigation.expand
+    - navigation.footer
+    - content.code.copy
+    - search.highlight
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+plugins:
+  - search
+  - glightbox
+markdown_extensions:
+  - admonition
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+  - pymdownx.details
+  - pymdownx.highlight
+  - pymdownx.superfences
+nav:
+  - Home: index.md
+  - 01. Commit configuration: 01-commit-configuration/index.md
+  - 02. IOS XR processes: 02-ios-xr-processes/index.md
+  - 03. Memory leak detection: 03-memory-leak-detection/index.md
+  - 04. Task groups: 04-task-groups/index.md
+  - 05. Useful debugging commands: 05-useful-debugging-commands/index.md
