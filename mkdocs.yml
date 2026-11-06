@@ -1,5 +1,5 @@
 site_name: IOS XR Hands-on Guide
-site_description: Hands-on lab guide for Cisco IOS XR configuration, processes, memory, task groups, and debugging.
+site_description: Hands-on lab guide for Cisco IOS XR configuration, operations, monitoring, and BGP/ISIS.
 site_dir: site
 theme:
   name: material
@@ -35,7 +35,5 @@ markdown_extensions:
 nav:
   - Home: index.md
   - 01. Commit configuration: 01-commit-configuration/index.md
-  - 02. IOS XR processes: 02-ios-xr-processes/index.md
-  - 03. Memory leak detection: 03-memory-leak-detection/index.md
-  - 04. Task groups: 04-task-groups/index.md
-  - 05. Useful debugging commands: 05-useful-debugging-commands/index.md
+  - 02. IOS XR operations and monitoring tools: 02-operations-and-monitoring/index.md
+  - 03. BGP and ISIS protocols: 03-bgp-and-isis/index.md

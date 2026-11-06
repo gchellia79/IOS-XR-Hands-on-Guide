@@ -173,12 +173,18 @@ IOS XR maintains a history of committed configurations, which you can use to rol
 
 ### Exercise 1.5
 
-1. Use `show configuration commit list` to see all the previous committed configs.
-2. Use `rollback configuration last 1` to roll back to the previous commit.
+1. Use `rollback configuration last 1` to roll back to the previous commit.
+
+Other useful CLIs for day-to-day operations:
+
+- `show configuration commit changes last <Number of commits>` — view the configurations committed since the last number of commits.
+- `show configuration commit list` — see all the previous committed config.
+- `show cli history detail` — view all the CLI executed.
+- `show context` and `show execptions` — view all the crash info.
 
 !!! warning "TODO"
-    The original notes do not include sample output for `show configuration commit list` or `rollback configuration last 1`.
+    The original notes do not include sample output for rollback or these operational show commands. The source spells the crash-info command as `show execptions`; confirm whether this should be `show exceptions`.
 
 ## Next step
 
-Continue with [02. IOS XR processes](../02-ios-xr-processes/index.md).
+Continue with [02. IOS XR operations and monitoring tools](../02-operations-and-monitoring/index.md).
