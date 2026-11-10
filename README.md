@@ -1,6 +1,6 @@
 # IOS XR Hands-on Guide
 
-MkDocs Material site for the PTA IOS XR lab/demo guide. The published pages walk through commit behaviour, processes, memory leak detection, task groups, and useful debugging commands.
+MkDocs Material site for the IOS XR hands-on lab guide. The published chapters cover lab preparation, commit behaviour, operations and monitoring, ISIS with segment routing, and BGP.
 
 ## Run locally
 

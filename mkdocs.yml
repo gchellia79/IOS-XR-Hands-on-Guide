@@ -1,5 +1,5 @@
-site_name: IOS XR Hands-on Guide
-site_description: Hands-on lab guide for Cisco IOS XR configuration, operations, monitoring, and BGP/ISIS.
+site_name: IOS XR Hands-on
+site_description: Hands-on labs for Cisco IOS XR operations, routing, and troubleshooting.
 site_dir: site
 theme:
   name: material
@@ -34,6 +34,8 @@ markdown_extensions:
   - pymdownx.superfences
 nav:
   - Home: index.md
+  - 00. Preparation: 00-preparation/index.md
   - 01. Commit configuration: 01-commit-configuration/index.md
-  - 02. IOS XR operations and monitoring tools: 02-operations-and-monitoring/index.md
-  - 03. BGP and ISIS protocols: 03-bgp-and-isis/index.md
+  - 02. Operations and monitoring: 02-operations-and-monitoring/index.md
+  - 03. ISIS and segment routing: 03-bgp-and-isis/index.md
+  - 04. BGP: 04-bgp/index.md

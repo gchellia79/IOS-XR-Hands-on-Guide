@@ -33,7 +33,7 @@
 | PID | `16870` | Changes if the process is stopped and restarted |
 
 !!! warning "TODO"
-    The original 0.2 notes do not include a post-restart `show processes isis` capture.
+    Draft 0.4 does not include a post-restart `show processes isis` capture.
 
 ## 2.2 Monitor process
 
@@ -45,7 +45,11 @@ The `monitor process` command provides Unix `top`-like information. It displays 
 2. To change the parameters displayed, enter one of the interactive commands (for example `?` for help).
 3. Use `n` for the number of entries to display.
 
-![monitor process with n to set the number of entries](images/image01.png)
+![Monitor process with n to set the number of entries](images/image13.png)
+
+To check whether a process is blocked, run `show process blocked location <location>` several times and compare the results.
+
+![Check blocked processes](images/image14.png)
 
 ## 2.3 Memory leak detection
 
@@ -60,21 +64,26 @@ If you feel some trigger is leaking the memory, you can detect a memory leak wit
 1. Take a baseline snapshot:
 
     ```text
-    show memory compart start
+    show memory compare start
     ```
 
 2. Execute the trigger. It can be restarting the ISIS process or relearning the BGP routes.
-3. Take the second snapshot and generate the report:
+3. Take the second snapshot:
 
     ```text
     show memory compare end
+    ```
+
+4. Generate the report:
+
+    ```text
     show memory compare report
     ```
 
 `show memory compare report` shows differences between the baseline snapshot and the second snapshot.
 
 !!! warning "TODO"
-    The original step 1 uses `show memory compart start`. Step 3 uses `show memory compare end` and `show memory compare report`. Confirm whether step 1 should be `show memory compare start`. No sample command output is included in the original notes.
+    The source does not include sample command output.
 
 Other useful memory commands:
 
@@ -91,17 +100,17 @@ IOS XR supports multiple pipes on the command line so that the output can be pro
 
 1. Use multiple pipes to extract required information from the show commands.
 
-![show ip interface brief filtered with two pipes](images/image02.png)
+![Show IP interface brief filtered with two pipes](images/image15.png)
 
 ## 2.5 Describe command
 
 In Cisco IOS XR, the `describe` command is a powerful operational utility used to inspect the internal details, required privileges, and background architecture of any CLI command.
 
-![describe show bgp vpnv4 unicast summary](images/image03.png)
+![Describe show BGP VPNv4 unicast summary](images/image16.png)
 
 ### Exercise 2.5
 
-1. Execute `show bgp vpn4 unicast summar` or your favourite command.
+1. Execute `show bgp vpn4 unicast summary` or your favourite command.
 2. Append `describe` to the command and execute it again.
 3. Observe the privileges required to execute this command.
 4. Note down the CLI under **Spawn the Process**.
@@ -109,13 +118,13 @@ In Cisco IOS XR, the `describe` command is a powerful operational utility used t
 6. Execute the CLI which you got under spawn the process and observe the output.
 
 !!! warning "TODO"
-    The exercise text uses `show bgp vpn4 unicast summar`. The screenshot shows `describe show bgp vpnv4 unicast summary`. Confirm the intended command. The original notes do not include output from the `run` / spawned process step.
+    The source does not include output from the `run` / spawned process step.
 
 ## 2.6 Trace functionality
 
 Trace functionality in Cisco IOS XR serves as an always-on diagnostic logging mechanism. It acts like persistent debug logs for specific daemons, protocols, and hardware components without requiring you to turn on heavy, disruptive real-time debugs.
 
-![show isis trace severe](images/image04.png)
+![Show ISIS trace](images/image17.png)
 
 1. Run `show isis trace` or `show bgp trace` and check the debug logs.
 2. Add the keyword `tailf` to view the latest debug.
@@ -126,9 +135,9 @@ In Cisco IOS XR, the foundational command to collect systemic diagnostic informa
 
 You can also collect `show tech-support` for a specific module.
 
-![show tech-support snmp](images/image05.png)
+![Show tech-support for SNMP](images/image18.png)
 
-![show tech-support vrrp](images/image06.png)
+![Show tech-support for VRRP](images/image19.png)
 
 ## 2.8 Task groups
 
@@ -139,22 +148,20 @@ IOS XR has a strong embedded mechanism for user authentication and authorization
 1. Create a user called `lab` and bind the usergroup `level_1`.
 2. Log in as `lab` and check what privileges the user has.
 
-Configs from the original notes:
-
 ```text
-username test
+username lab
  group operator
  secret <password>
 ```
 
 | Parameter | Value | Notes |
 | --- | --- | --- |
-| Username in the steps | `lab` | Bound to usergroup `level_1` in the exercise text |
-| Username in the config sample | `test` | Bound to group `operator` |
+| Username | `lab` | Consistent in the exercise and config sample |
+| User group | `level_1` / `operator` | Exercise asks for `level_1`; config sample uses `operator` |
 | Secret | `<password>` | Do not store a real secret in this guide |
 
 !!! warning "TODO"
-    Exercise 2.8.1 asks for user `lab` and usergroup `level_1`, but the config sample under this exercise is `username test` / `group operator`. Confirm which example to use. The original notes do not include login or privilege-check output.
+    Confirm whether Exercise 2.8.1 should use the custom `level_1` group or the system-defined `operator` group. The source does not include login or privilege-check output.
 
 ### Exercise 2.8.2
 
@@ -200,6 +207,28 @@ show aaa usergroup level_1
 !!! warning "TODO"
     The original notes do not include output for the `show user` / `show aaa usergroup` commands.
 
+## 2.9 Run and attach
+
+The `run` command opens the underlying Linux Bash shell from IOS XR EXEC mode. Use `exit` to return to the IOS XR CLI.
+
+![Run command from IOS XR](images/image20.png)
+
+On a multi-line-card chassis, use `attach` from admin mode to access a line card. This command is not available in the virtual XRd lab; the screenshot is provided for reference.
+
+![Attach to a line card](images/image21.png)
+
+## 2.10 Interface troubleshooting
+
+Use `show controllers <interface-name> all` to inspect low-level hardware and interface-controller diagnostics.
+
+![Interface controller diagnostics](images/image22.png)
+
+![Additional interface controller details](images/image23.png)
+
+The following output is from physical 8202 hardware.
+
+![Interface controller output from 8202 hardware](images/image24.png)
+
 ## Next step
 
-Continue with [03. BGP and ISIS protocols](../03-bgp-and-isis/index.md).
+Continue with [03. ISIS and segment routing](../03-bgp-and-isis/index.md).

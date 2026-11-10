@@ -1,11 +1,19 @@
-# IOS XR Hands-on Guide
+# IOS XR Hands-on
 
-This guide is a hands-on walkthrough of Cisco IOS XR lab exercises: how configuration is staged and committed, how the router is operated and monitored, and the BGP/ISIS lab topology.
+This guide walks through a Cisco IOS XR lab, from starting the environment to investigating routing and forwarding behaviour. Work through the chapters in order; examples and screenshots follow the supplied lab topology.
 
-Work through the chapters in order. Each chapter states a goal, then uses numbered steps, parameter tables, screenshots, and verbatim CLI from the original lab notes.
+## Lab story
 
-| No. | Chapter | Description |
-| --- | --- | --- |
-| 01 | [Commit configuration](01-commit-configuration/index.md) | Target configuration, `commit`, best-effort and confirmed commits, exclusive sessions, and rollback |
-| 02 | [IOS XR operations and monitoring tools](02-operations-and-monitoring/index.md) | Processes, `monitor process`, memory compare, pipes, `describe`, traces, tech-support, and task groups |
-| 03 | [BGP and ISIS protocols](03-bgp-and-isis/index.md) | Lab topology, roles, and management addresses |
+1. Prepare the dCloud environment and start the CML lab.
+2. Practise target configuration, commit options, exclusive sessions, and rollback.
+3. Inspect IOS XR processes, memory, interfaces, traces, and task-group permissions.
+4. Follow ISIS and segment-routing information through the core and troubleshoot a link failure.
+5. Establish PE-CE BGP, apply routing policies, and filter advertised prefixes.
+
+## Chapters
+
+- [00. Preparation](00-preparation/index.md)
+- [01. Commit configuration](01-commit-configuration/index.md)
+- [02. Operations and monitoring](02-operations-and-monitoring/index.md)
+- [03. ISIS and segment routing](03-bgp-and-isis/index.md)
+- [04. BGP](04-bgp/index.md)

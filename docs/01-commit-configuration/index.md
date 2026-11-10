@@ -16,9 +16,6 @@ Configure a loopback interface and verify the target configuration.
 3. When you are happy with the config, use `commit` to move it to running configuration.
 4. Verify the running configuration.
 
-!!! warning "TODO"
-    The original exercise text says configure loopback `1.1.1.1`. The captured CLI uses `int lo11`, address `11.11.11.11/32`, interface `Loopback1`, commit label `ADDEDLOOPBACK0`, and `sh running-config interface lo0`. Follow the captured CLI below until the intended interface name and address are confirmed.
-
 ```text
 RP/0/RP0/CPU0:R1(config)#int lo11
 RP/0/RP0/CPU0:R1(config-if)#ip address 11.11.11.11/32
@@ -34,7 +31,7 @@ RP/0/RP0/CPU0:R1(config)#show
 Wed Oct 28 05:53:23.345 UTC
 !! Building configuration...
 !! IOS XR Configuration 26.1.1
-interface Loopback1
+interface Loopback11
  ipv4 address 11.11.11.11 255.255.255.255
 !
 end
@@ -44,9 +41,9 @@ RP/0/RP0/CPU0:R1(config)#
 Verify the running configuration:
 
 ```text
-RP/0/RP0/CPU0:R1#sh running-config interface lo0
+RP/0/RP0/CPU0:R1#sh running-config interface lo11
 Wed Oct 28 05:57:47.885 UTC
-interface Loopback1
+interface Loopback11
  ipv4 address 11.11.11.11 255.255.255.255
 !
 RP/0/RP0/CPU0:R1#
@@ -84,10 +81,10 @@ commit
 2. Use `show` to view the target config.
 3. Use `show configuration failed` to understand why the commit did not succeed.
 4. Use `commit best-effort` to commit only the valid configs.
-5. Use `show run policy-map INGRESS` to check the valid configs pushed to the device.
+5. Use `show run policy-map CBWFQ` to check the valid configs pushed to the device.
 
 !!! warning "TODO"
-    The original notes do not include the commit error output. The policy map in the target config is `CBWFQ`, but the verification command is `show run policy-map INGRESS`. Confirm which policy-map name to verify.
+  The source does not include the failed commit output.
 
 ## 1.3 Commit confirmed
 
@@ -180,10 +177,10 @@ Other useful CLIs for day-to-day operations:
 - `show configuration commit changes last <Number of commits>` — view the configurations committed since the last number of commits.
 - `show configuration commit list` — see all the previous committed config.
 - `show cli history detail` — view all the CLI executed.
-- `show context` and `show execptions` — view all the crash info.
+- `show context` and `show exceptions` — view crash information.
 
 !!! warning "TODO"
-    The original notes do not include sample output for rollback or these operational show commands. The source spells the crash-info command as `show execptions`; confirm whether this should be `show exceptions`.
+  The source does not include sample output for rollback or these operational show commands.
 
 ## Next step
 
