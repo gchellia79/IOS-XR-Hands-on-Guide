@@ -24,7 +24,7 @@
 
 2. Note the job ID, process ID, and thread ID.
 3. Restart the ISIS process with `process restart isis`.
-4. Observe the job ID, process ID, and thread ID again. The job ID will not change, but the process ID and thread ID will change.
+4. Run `show processes isis` again and observe the job ID, process ID, and thread ID. The job ID will not change, but the process ID and thread ID will change.
 
 | Parameter | Value | Notes |
 | --- | --- | --- |
@@ -33,19 +33,23 @@
 | PID | `16870` | Changes if the process is stopped and restarted |
 
 !!! warning "TODO"
-    Draft 0.4 does not include a post-restart `show processes isis` capture.
+    The source does not include a post-restart `show processes isis` capture.
 
-## 2.2 Monitor process
+## 2.2 Monitor processes
 
-The `monitor process` command provides Unix `top`-like information. It displays details on the number of running processes, CPU, and memory utilization, and automatically updates every 10 seconds.
+The `monitor processes` command provides Unix `top`-like information. It displays details on the number of running processes, CPU, and memory utilization, and automatically updates every 10 seconds.
 
 ### Exercise 2.2
 
-1. Issue `monitor process` and observe which process consumes more CPU.
+1. Issue `monitor processes` and observe which process consumes more CPU.
 2. To change the parameters displayed, enter one of the interactive commands (for example `?` for help).
 3. Use `n` for the number of entries to display.
 
 ![Monitor process with n to set the number of entries](images/image13.png)
+
+Run `show processes location 0/RP0/CPU0` to list processes at that location.
+
+![Process list for the route processor](images/process-list.png)
 
 To check whether a process is blocked, run `show process blocked location <location>` several times and compare the results.
 
@@ -59,7 +63,7 @@ There is a built-in tool in XR which computes automatically which process has al
 
 If you feel some trigger is leaking the memory, you can detect a memory leak with the following method.
 
-### Exercise 3.1
+### Exercise 2.3
 
 1. Take a baseline snapshot:
 
@@ -67,12 +71,19 @@ If you feel some trigger is leaking the memory, you can detect a memory leak wit
     show memory compare start
     ```
 
+    ![Start the memory comparison](images/memory-start.png)
+
 2. Execute the trigger. It can be restarting the ISIS process or relearning the BGP routes.
+
+    ![Restart ISIS as the trigger](images/memory-trigger.png)
+
 3. Take the second snapshot:
 
     ```text
     show memory compare end
     ```
+
+    ![End the memory comparison](images/memory-end.png)
 
 4. Generate the report:
 
@@ -80,10 +91,9 @@ If you feel some trigger is leaking the memory, you can detect a memory leak wit
     show memory compare report
     ```
 
-`show memory compare report` shows differences between the baseline snapshot and the second snapshot.
+    ![Memory comparison report](images/memory-report.png)
 
-!!! warning "TODO"
-    The source does not include sample command output.
+The report shows differences between the two snapshots. Repeat the comparison and inspect the `DIFFERENCE` column for persistent growth that may indicate a memory leak.
 
 Other useful memory commands:
 
@@ -126,7 +136,7 @@ Trace functionality in Cisco IOS XR serves as an always-on diagnostic logging me
 
 ![Show ISIS trace](images/image17.png)
 
-1. Run `show isis trace` or `show bgp trace` and check the debug logs.
+1. Run `show isis trace severe` or `show bgp trace` and check the debug logs.
 2. Add the keyword `tailf` to view the latest debug.
 
 ## 2.7 show tech-support functionality
@@ -145,30 +155,30 @@ IOS XR has a strong embedded mechanism for user authentication and authorization
 
 ### Exercise 2.8.1
 
-1. Create a user called `lab` and bind the usergroup `level_1`.
-2. Log in as `lab` and check what privileges the user has.
+1. Create a user called `user1` and bind the system-defined usergroup `operator`.
+2. Log in as `user1` and check its privileges with commands such as `show version` and `show bgp ?`.
+3. Use `exit` to log out and return to the `cisco` account.
 
 ```text
-username lab
+username user1
  group operator
  secret <password>
 ```
 
 | Parameter | Value | Notes |
 | --- | --- | --- |
-| Username | `lab` | Consistent in the exercise and config sample |
-| User group | `level_1` / `operator` | Exercise asks for `level_1`; config sample uses `operator` |
+| Username | `user1` | Bound to `operator` |
+| User group | `operator` | System-defined user group |
 | Secret | `<password>` | Do not store a real secret in this guide |
 
-!!! warning "TODO"
-    Confirm whether Exercise 2.8.1 should use the custom `level_1` group or the system-defined `operator` group. The source does not include login or privilege-check output.
+![Operator group privileges](images/operator-group.png)
 
 ### Exercise 2.8.2
 
 1. Define a taskgroup called `ISISREAD` and give only read permission for ISIS.
 2. Define a usergroup called `LEVEL_1` and bind the taskgroup `ISISREAD`.
-3. Create a user called `lab` and bind the usergroup `level_1`.
-4. Log in as `lab` and check what privileges the user has.
+3. Create a user called `user2` and bind the usergroup `LEVEL_1`.
+4. Log in as `user2` and check what privileges the user has.
 
 ```text
 taskgroup ISISREAD
@@ -177,7 +187,7 @@ taskgroup ISISREAD
 usergroup LEVEL_1
  taskgroup ISISREAD
 
-username lab
+username user2
  group LEVEL_1
  secret <password>
 ```
@@ -186,8 +196,10 @@ username lab
 | --- | --- | --- |
 | Task group | `ISISREAD` | `task read isis` only |
 | User group | `LEVEL_1` | Bound to `ISISREAD` |
-| Username | `lab` | Bound to `LEVEL_1` |
+| Username | `user2` | Bound to `LEVEL_1` |
 | Secret | `<password>` | Placeholder |
+
+![ISIS read user privileges](images/isis-read-user.png)
 
 Use these commands to inspect authentication and group privileges:
 
@@ -203,9 +215,6 @@ show aaa usergroup level_1
 
 !!! note
     `cisco-support` has the highest privilege.
-
-!!! warning "TODO"
-    The original notes do not include output for the `show user` / `show aaa usergroup` commands.
 
 ## 2.9 Run and attach
 
@@ -228,6 +237,23 @@ Use `show controllers <interface-name> all` to inspect low-level hardware and in
 The following output is from physical 8202 hardware.
 
 ![Interface controller output from 8202 hardware](images/image24.png)
+
+## 2.11 Local Packet Transport Services
+
+Local Packet Transport Services (LPTS) provides firewall and policing functionality for traffic destined for the router. It filters and polices packets by flow type before delivering them to software, helping protect the CPU.
+
+### Exercise 2.11
+
+Inspect the LPTS entries using the following commands:
+
+```text
+show lpts ifib
+show lpts pifib brief location 0/RP0/CPU0
+```
+
+![LPTS internal forwarding information base](images/lpts-ifib.png)
+
+![LPTS pre-internal forwarding information base](images/lpts-pifib.png)
 
 ## Next step
 
